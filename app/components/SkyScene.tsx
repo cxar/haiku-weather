@@ -42,11 +42,13 @@ export default function SkyScene() {
         temp: weather.temp,
         condition: weather.condition,
         description: weather.description,
+        locationName: weather.locationName,
+        country: weather.country,
       };
 
       const poemRes = await fetch('/api/poem', {
         method: 'POST',
-        body: JSON.stringify({ weather: structuredWeather }),
+        body: JSON.stringify({ weather: structuredWeather}),
         headers: { 'Content-Type': 'application/json' },
       });
       const { poem } = await poemRes.json();

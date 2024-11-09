@@ -3,14 +3,20 @@ import { openai } from '@ai-sdk/openai';
 import { anthropic } from '@ai-sdk/anthropic';
 import { groq } from '@ai-sdk/groq';
 
-export async function generatePoem(weather: { temp: number; condition: string; description: string }) {
-  const { temp, condition, description } = weather;
+export async function generatePoem(weather: { temp: number; condition: string; description: string, locationName: string, country: string }) {
+  const { temp, condition, description, locationName, country } = weather;
 
   const prompt = `Generate a haiku based on the following weather conditions:
+  Location: ${locationName}, ${country}
   Temperature: ${temp}°F
   Condition: ${condition}
   Description: ${description}
+  Date: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
   
+  Don't feel obligated to use all the information provided. 
+  Sometimes the location name will not be descriptive enough, so you can use the temperature and condition to describe the location.
+  Only rely on the location name if it's a sizeable city.
+
   Respond with a haiku, no other text.`;
 
   const systemMessage = 'You are a creative poet who crafts beautiful haikus based on weather conditions.';
