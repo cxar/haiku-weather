@@ -30,7 +30,7 @@ export default function HotAirBalloon({ position, isContentLoaded }: HotAirBallo
 
   const { opacity } = useSpring({
     opacity: isContentLoaded ? 0 : 1,
-    config: { mass: 5, tension: 25, friction: 22 },
+    config: { mass: 2, tension: 50, friction: 15 },
   });
 
   useFrame(() => {

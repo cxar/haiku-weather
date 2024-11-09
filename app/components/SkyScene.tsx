@@ -86,9 +86,9 @@ export default function SkyScene() {
     <div className="fixed inset-0 overflow-hidden">
       <div className="fixed inset-0 z-10">
         <Canvas camera={{ position: [0, 1, 10], fov }}>
-          <Sky sunPosition={[100, 30, 100]} />
-          <ambientLight intensity={1} />
-          <directionalLight position={[5, 5, 5]} intensity={1.2} />
+          <color attach="background" args={["#cfebff"]} />
+          <ambientLight intensity={3} />
+          <directionalLight position={[5, 5, 5]} intensity={5} />
           
           <Title isContentLoaded={isContentLoaded} />
           <HotAirBalloon position={[-1, 1, 0]} isContentLoaded={isContentLoaded} />

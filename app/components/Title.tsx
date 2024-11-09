@@ -5,7 +5,7 @@ export default function Title({ isContentLoaded }: { isContentLoaded: boolean })
   return (
     <Html
       center
-      position={[0, 15, -60]} 
+      position={[0, 18, -60]} 
       transform
       distanceFactor={25}
     >
