@@ -3,7 +3,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Sky } from '@react-three/drei';
 import HotAirBalloon from './HotAirBalloon';
 import Cloud from './Cloud';
 import PoemDisplay from './PoemDisplay';
