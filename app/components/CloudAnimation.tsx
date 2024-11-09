@@ -1,12 +1,15 @@
+// SkyScene.tsx
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Group } from 'three';
-import { Sky, useGLTF } from '@react-three/drei';
+import { Group, Mesh, Material } from 'three';
+import { Sky } from '@react-three/drei';
 import { useSpring } from '@react-spring/three';
 import PoemDisplay from './PoemDisplay';
 import { getLocation } from '@/lib/location';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import * as THREE from 'three';
 
 function HotAirBalloon({
   position,
@@ -16,11 +19,25 @@ function HotAirBalloon({
   isContentLoaded: boolean;
 }) {
   const group = useRef<Group>(null);
-  const initialPos = useRef({ x: position[0] - 1, y: position[1] - 1, z: position[2] + 2 });
+  const initialPos = useRef({
+    x: position[0] - 1,
+    y: position[1] - 1,
+    z: position[2] + 2,
+  });
   const time = useRef(Math.random() * 1000);
 
-  const { scene } = useGLTF('/models/hot_air_balloon.glb') as any;
+  // State to hold the loaded model
+  const [model, setModel] = useState<THREE.Group | null>(null);
 
+  // Load the model using GLTFLoader
+  useEffect(() => {
+    const loader = new GLTFLoader();
+    loader.load('/models/hot_air_balloon.glb', (gltf) => {
+      setModel(gltf.scene);
+    });
+  }, []);
+
+  // Opacity animation
   const { opacity } = useSpring({
     opacity: isContentLoaded ? 0 : 1,
     config: {
@@ -31,7 +48,7 @@ function HotAirBalloon({
   });
 
   useFrame(() => {
-    if (group.current) {
+    if (group.current && model) {
       time.current += 0.01;
 
       const x = initialPos.current.x + Math.sin(time.current * 0.5) * 0.05;
@@ -41,8 +58,9 @@ function HotAirBalloon({
       group.current.position.set(x, y, z);
       group.current.rotation.y += 0.0002;
 
-      scene.traverse((child: any) => {
-        if (child.isMesh) {
+      // Update the opacity of the model's materials
+      model.traverse((child) => {
+        if (child instanceof Mesh && child.material instanceof Material) {
           child.material.transparent = true;
           child.material.opacity = opacity.get();
         }
@@ -50,9 +68,12 @@ function HotAirBalloon({
     }
   });
 
+  // Return null if the model hasn't loaded yet
+  if (!model) return null;
+
   return (
     <group ref={group} scale={[0.025, 0.025, 0.025]}>
-      <primitive object={scene} />
+      <primitive object={model} />
     </group>
   );
 }
@@ -65,11 +86,25 @@ function Cloud({
   isContentLoaded: boolean;
 }) {
   const cloudRef = useRef<Group>(null);
-  const initialPos = useRef({ x: position[0] - 1, y: position[1] - 1, z: position[2]});
+  const initialPos = useRef({
+    x: position[0] - 1,
+    y: position[1] - 1,
+    z: position[2],
+  });
   const time = useRef(Math.random() * 1000);
 
-  const { scene } = useGLTF('/models/clouds.glb') as any;
+  // State to hold the loaded model
+  const [model, setModel] = useState<THREE.Group | null>(null);
 
+  // Load the model using GLTFLoader
+  useEffect(() => {
+    const loader = new GLTFLoader();
+    loader.load('/models/clouds.glb', (gltf) => {
+      setModel(gltf.scene);
+    });
+  }, []);
+
+  // Opacity animation
   const { opacity } = useSpring({
     opacity: isContentLoaded ? 0 : 1,
     config: {
@@ -80,7 +115,7 @@ function Cloud({
   });
 
   useFrame(() => {
-    if (cloudRef.current) {
+    if (cloudRef.current && model) {
       time.current += 0.01;
 
       const x = initialPos.current.x + Math.sin(time.current * 0.5) * 0.05;
@@ -89,8 +124,9 @@ function Cloud({
 
       cloudRef.current.position.set(x, y, z);
 
-      scene.traverse((child: any) => {
-        if (child.isMesh) {
+      // Update the opacity of the model's materials
+      model.traverse((child) => {
+        if (child instanceof Mesh && child.material instanceof Material) {
           child.material.transparent = true;
           child.material.opacity = opacity.get();
         }
@@ -98,9 +134,12 @@ function Cloud({
     }
   });
 
+  // Return null if the model hasn't loaded yet
+  if (!model) return null;
+
   return (
     <group ref={cloudRef} scale={[8, 8, 8]}>
-      <primitive object={scene} />
+      <primitive object={model} />
     </group>
   );
 }
@@ -155,7 +194,7 @@ export default function SkyScene() {
       });
       const { poem } = await poemRes.json();
       setPoem(poem);
-    } catch (err) {
+    } catch {
       setError('Failed to fetch location, weather, or poem');
     } finally {
       setTimeout(() => {
@@ -198,6 +237,3 @@ export default function SkyScene() {
     </div>
   );
 }
-
-useGLTF.preload('/models/hot_air_balloon.glb');
-useGLTF.preload('/models/clouds.glb');

@@ -20,7 +20,7 @@ export async function getLocation(): Promise<{ latitude: number; longitude: numb
             longitude: position.coords.longitude,
           });
         },
-        (error) => {
+        () => {
           fetch('https://ipapi.co/json/')
             .then(response => response.json())
             .then(data => {
