@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Sky, Html } from '@react-three/drei';
+import { Sky } from '@react-three/drei';
 import HotAirBalloon from './HotAirBalloon';
 import Cloud from './Cloud';
 import PoemDisplay from './PoemDisplay';
@@ -12,7 +12,6 @@ import { getLocation } from '@/lib/location';
 
 export default function SkyScene() {
   const [poem, setPoem] = useState<string>('');
-  const [error, setError] = useState<string>('');
   const [isContentLoaded, setIsContentLoaded] = useState<boolean>(false);
   const [fov, setFov] = useState<number>(60);
 
@@ -53,7 +52,7 @@ export default function SkyScene() {
       const { poem } = await poemRes.json();
       setPoem(poem);
     } catch {
-      setError('Failed to fetch location, weather, or poem');
+      // Error handling is done silently since we don't display errors to the user
     } finally {
       setTimeout(() => {
         setIsContentLoaded(true);
