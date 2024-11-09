@@ -35,7 +35,7 @@ export default function Cloud({ position, isContentLoaded }: CloudProps) {
 
   useFrame(() => {
     if (cloudRef.current && model) {
-      time.current += 0.01;
+      time.current += 0.015;
       const x = initialPos.current.x + Math.sin(time.current * 0.5) * 0.05;
       const y = initialPos.current.y + Math.sin(time.current * 0.5) * 0.05;
       const z = initialPos.current.z + Math.cos(time.current * 0.5) * 0.05;

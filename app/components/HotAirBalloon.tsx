@@ -40,7 +40,7 @@ export default function HotAirBalloon({ position, isContentLoaded }: HotAirBallo
       const y = initialPos.current.y + Math.sin(time.current * 0.5) * 0.05;
       const z = initialPos.current.z + Math.cos(time.current * 0.5) * 0.05;
       group.current.position.set(x, y, z);
-      group.current.rotation.y += 0.0002;
+      group.current.rotation.y += 0.0014;
 
       model.traverse((child) => {
         if (child instanceof Mesh && child.material instanceof Material) {
