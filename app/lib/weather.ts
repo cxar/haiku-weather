@@ -5,9 +5,9 @@ export async function getWeatherData(location: LocationInput) {
     
     let url: string;
     if (typeof location === 'string') {
-        url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location.trim())}&units=metric&appid=${apiKey}`;
+        url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location.trim())}&units=imperial&appid=${apiKey}`;
     } else if (typeof location === 'object' && 'latitude' in location && 'longitude' in location) {
-        url = `https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&units=metric&appid=${apiKey}`;
+        url = `https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&units=imperial&appid=${apiKey}`;
     } else {
         throw new Error('Invalid location format. Must be a string or an object with latitude and longitude');
     }

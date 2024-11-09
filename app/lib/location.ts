@@ -1,7 +1,17 @@
 export async function getLocation(): Promise<{ latitude: number; longitude: number }> {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
-      reject(new Error('Geolocation is not supported by your browser'));
+      fetch('https://ipapi.co/json/')
+        .then(response => response.json())
+        .then(data => {
+          resolve({
+            latitude: data.latitude,
+            longitude: data.longitude,
+          });
+        })
+        .catch(() => {
+          reject(new Error('Geolocation is not supported by your browser and IP location fetch failed'));
+        });
     } else {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -11,7 +21,17 @@ export async function getLocation(): Promise<{ latitude: number; longitude: numb
           });
         },
         (error) => {
-          reject(error);
+          fetch('https://ipapi.co/json/')
+            .then(response => response.json())
+            .then(data => {
+              resolve({
+                latitude: data.latitude,
+                longitude: data.longitude,
+              });
+            })
+            .catch(() => {
+              reject(new Error('Failed to fetch location via geolocation and IP location fetch failed'));
+            });
         }
       );
     }

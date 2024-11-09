@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 export default function PoemDisplay({ poem }: { poem: string }) {
   return (
     <motion.div 
-      className="text-center font-serif"
+      className="text-center font-serif text-gray-800"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
+      transition={{ duration: 1}}
     >
       <p className="whitespace-pre-line text-2xl leading-relaxed tracking-wide">
         {poem.split('\n').map((line, i) => (
@@ -14,8 +14,8 @@ export default function PoemDisplay({ poem }: { poem: string }) {
             key={i}
             className="block"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: i * 0.3 }}
+            animate={{ opacity: 1, y: 0}}
+            transition={{ duration: 2, delay: (i * 0.3) }}
           >
             {line}
           </motion.span>
