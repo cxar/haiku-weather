@@ -19,3 +19,18 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.clouds-animation {
+  filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.05));
+  transform-origin: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .clouds-animation {
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.05));
+  }
+}
+
+.font-serif {
+  font-family: 'Cormorant Garamond', serif;
+}
