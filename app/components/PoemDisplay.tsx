@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 export default function PoemDisplay({ poem }: { poem: string }) {
   return (
     <motion.div 
-      className="text-center font-serif text-gray-800 z-20 -mt-16"
+      className="text-center font-serif text-gray-800 z-20 -mt-20"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1}}
