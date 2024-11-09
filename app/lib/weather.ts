@@ -30,6 +30,18 @@ export async function getWeatherData(location: LocationInput) {
     
     return {
         temp: data.main.temp,
+        temp_max: data.main.temp_max,
+        temp_min: data.main.temp_min,
+        feels_like: data.main.feels_like,
+        wind: {
+            speed: data.wind.speed,
+            deg: data.wind.deg,
+            gust: data.wind.gust
+        },
+        rain: data.rain?.["1h"] || 0,
+        humidity: data.main.humidity,
+        visibility: data.visibility,
+        clouds: data.clouds.all,
         condition: data.weather[0].main,
         description: data.weather[0].description,
         locationName: data.name,
