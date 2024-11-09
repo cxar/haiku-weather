@@ -24,7 +24,7 @@ export async function generatePoem(weather: { temp: number; condition: string; d
   try {
     // Attempt to generate a poem using OpenAI
     const openaiResponse = await generateText({
-      model: openai('gpt-4o-mini'),
+      model: openai('gpt-4o'),
       system: systemMessage,
       prompt
     });
