@@ -15,7 +15,7 @@ export async function generatePoem(weather: { temp: number; condition: string; d
   
   Don't feel obligated to use all the information provided. 
   Sometimes the location name will not be descriptive enough, so you can use the temperature and condition to describe the location.
-  Only rely on the location name if it's a sizeable city.
+  Only rely on the location name if it's a notable location.
   Don't use time of day in your haiku.
 
   Respond with a haiku, no other text.`;
