@@ -3,25 +3,32 @@ import { openai } from "@ai-sdk/openai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { groq } from "@ai-sdk/groq";
 
-export async function generatePoem(weather: {
-  temp: number;
-  temp_max: number;
-  temp_min: number;
-  feels_like: number;
-  wind: {
-    speed: number;
-    deg: number;
-    gust: number;
-  };
-  rain: number;
-  humidity: number;
-  visibility: number;
-  condition: string;
-  description: string;
-  locationName: string;
-  country: string;
-  clouds: number;
-}) {
+export async function generatePoem(
+  weather: {
+    temp: number;
+    temp_max: number;
+    temp_min: number;
+    feels_like: number;
+    wind: {
+      speed: number;
+      deg: number;
+      gust: number;
+    };
+    rain: number;
+    humidity: number;
+    visibility: number;
+    condition: string;
+    description: string;
+    locationName: string;
+    country: string;
+    clouds: number;
+  },
+  providers: ("openai" | "anthropic" | "groq")[] = [
+    "openai",
+    "anthropic",
+    "groq",
+  ],
+) {
   console.log("Generating poem for weather:", weather);
 
   const {
@@ -64,52 +71,46 @@ export async function generatePoem(weather: {
   console.log("Generated prompt:", prompt);
 
   const systemMessage =
-    "You are a creative poet who crafts beautiful haikus based on weather conditions.";
+    "You are a creative poet who crafts beautiful, artful haikus based on weather conditions.";
 
-  try {
-    console.log("Attempting to generate poem with Anthropic");
-    const anthropicResponse = await generateText({
-      model: anthropic("claude-3-5-sonnet-20240620"),
-      system: systemMessage,
-      prompt,
-    });
+  for (const provider of providers) {
+    try {
+      console.log(`Attempting to generate poem with ${provider}`);
+      let response;
 
-    console.log("Successfully generated poem with Anthropic");
-    console.log("Anthropic response:", anthropicResponse.text);
-    return anthropicResponse.text;
-  } catch (error) {
-    console.error("Error with Anthropic, trying OpenAI:", error);
-  }
+      switch (provider) {
+        case "openai":
+          response = await generateText({
+            model: openai("gpt-4o"),
+            system: systemMessage,
+            prompt,
+          });
+          break;
+        case "anthropic":
+          response = await generateText({
+            model: anthropic("claude-3-5-sonnet-20240620"),
+            system: systemMessage,
+            prompt,
+          });
+          break;
+        case "groq":
+          response = await generateText({
+            model: groq("llama-3.1-70b-versatile"),
+            system: systemMessage,
+            prompt,
+          });
+          break;
+      }
 
-  try {
-    console.log("Attempting to generate poem with OpenAI");
-    const openaiResponse = await generateText({
-      model: openai("gpt-4o"),
-      system: systemMessage,
-      prompt,
-    });
-
-    console.log("Successfully generated poem with OpenAI");
-    console.log("OpenAI response:", openaiResponse.text);
-    return openaiResponse.text;
-  } catch (error) {
-    console.error("Error with OpenAI, trying Groq:", error);
-  }
-
-  try {
-    console.log("Attempting to generate poem with Groq");
-    const groqResponse = await generateText({
-      model: groq("llama-3.1-70b-versatile"),
-      system: systemMessage,
-      prompt,
-    });
-
-    console.log("Successfully generated poem with Groq");
-    console.log("Groq response:", groqResponse.text);
-    return groqResponse.text;
-  } catch (error) {
-    console.error("Error with Groq:", error);
-    throw new Error("Failed to generate poem with all available providers");
+      console.log(`Successfully generated poem with ${provider}`);
+      console.log(`${provider} response:`, response.text);
+      return response.text;
+    } catch (error) {
+      console.error(`Error with ${provider}:`, error);
+      if (provider === providers[providers.length - 1]) {
+        throw new Error("Failed to generate poem with all available providers");
+      }
+    }
   }
 }
 
