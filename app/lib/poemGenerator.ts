@@ -57,6 +57,7 @@ export async function generatePoem(weather: {
   Sometimes the location name will not be descriptive enough, so you can use the temperature and condition and omit location info.
   Only rely on the location name if it's a notable location.
   Don't use time of day in your haiku.
+  Avoid tropes (such as overuse of words like 'Whispers' or 'Gentle'-- be creative!).
 
   Respond with a haiku, no other text.`;
 
