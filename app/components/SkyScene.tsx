@@ -74,8 +74,10 @@ export default function SkyScene() {
       console.error("Error in fetchPoem:", error);
     } finally {
       console.log("Setting content loaded");
-      setIsContentLoaded(true);
-      console.log("Content loaded set to true");
+      setTimeout(() => {
+        setIsContentLoaded(true);
+        console.log("Content loaded set to true");
+      }, 1500);
     }
   }
 
