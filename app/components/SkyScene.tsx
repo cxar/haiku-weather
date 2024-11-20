@@ -1,4 +1,3 @@
-// app/components/SkyScene.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -74,59 +73,8 @@ export default function SkyScene() {
       console.error("Error in fetchPoem:", error);
     } finally {
       console.log("Setting content loaded");
-      Promise.race([
-        new Promise((resolve) => setTimeout(resolve, 1500)),
-        fetchPoemData(),
-      ]).then(() => {
-        setIsContentLoaded(true);
-        console.log("Content loaded set to true");
-      });
-    }
-
-    async function fetchPoemData() {
-      try {
-        console.log("Getting user location");
-        const location = await getLocation();
-        console.log("Location retrieved:", location);
-
-        console.log("Fetching weather data");
-        const weatherRes = await fetch("/api/weather", {
-          method: "POST",
-          body: JSON.stringify({ location }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const { weather } = await weatherRes.json();
-        console.log("Weather data received:", weather);
-
-        const structuredWeather = {
-          temp: weather.temp,
-          condition: weather.condition,
-          description: weather.description,
-          locationName: weather.locationName,
-          country: weather.country,
-          rain: weather.rain,
-          visibility: weather.visibility,
-          wind: weather.wind,
-          humidity: weather.humidity,
-          temp_max: weather.temp_max,
-          temp_min: weather.temp_min,
-          feels_like: weather.feels_like,
-          clouds: weather.clouds,
-        };
-        console.log("Structured weather data:", structuredWeather);
-
-        console.log("Fetching poem");
-        const poemRes = await fetch("/api/poem", {
-          method: "POST",
-          body: JSON.stringify({ weather: structuredWeather }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const { poem } = await poemRes.json();
-        console.log("Poem received:", poem);
-        setPoem(poem);
-      } catch (error) {
-        console.error("Error in fetchPoemData:", error);
-      }
+      setIsContentLoaded(true);
+      console.log("Content loaded set to true");
     }
   }
 
