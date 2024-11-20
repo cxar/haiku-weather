@@ -24,8 +24,8 @@ export async function generatePoem(
     clouds: number;
   },
   providers: ("openai" | "anthropic" | "groq")[] = [
-    "openai",
     "anthropic",
+    "openai",
     "groq",
   ],
 ) {
@@ -64,14 +64,14 @@ export async function generatePoem(
   Sometimes the location name will not be descriptive enough, so you can use the temperature and condition and omit location info.
   Only rely on the location name if it's a notable location.
   Don't use time of day in your haiku.
-  Avoid tropes (such as overuse of words like 'Whispers' or 'Gentle'-- be creative!).
+  Avoid tropes (such as overuse of words like 'Whispers' or 'Gentle'-- be creative! You should incorporate disparate concepts to make something uniquely beautiful).
 
   Respond with a haiku, no other text.`;
 
   console.log("Generated prompt:", prompt);
 
   const systemMessage =
-    "You are a creative poet who crafts beautiful, artful haikus based on weather conditions.";
+    "You are a creative poet who crafts beautiful, artful haikus based on weather conditions. You have won the Pulitzer Prize for Poetry many times. You're that talented.";
 
   for (const provider of providers) {
     try {
@@ -88,7 +88,7 @@ export async function generatePoem(
           break;
         case "anthropic":
           response = await generateText({
-            model: anthropic("claude-3-5-sonnet-20240620"),
+            model: anthropic("claude-3-5-sonnet-latest"),
             system: systemMessage,
             prompt,
           });
@@ -113,4 +113,3 @@ export async function generatePoem(
     }
   }
 }
-
