@@ -24,8 +24,8 @@ export async function generatePoem(
     clouds: number;
   },
   providers: ("openai" | "anthropic" | "groq")[] = [
-    "anthropic",
     "openai",
+    "anthropic",
     "groq",
   ],
 ) {
@@ -81,7 +81,7 @@ export async function generatePoem(
       switch (provider) {
         case "openai":
           response = await generateText({
-            model: openai("gpt-4o"),
+            model: openai("o3-mini"),
             system: systemMessage,
             prompt,
           });
