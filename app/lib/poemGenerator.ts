@@ -81,14 +81,14 @@ export async function generatePoem(
       switch (provider) {
         case "openai":
           response = await generateText({
-            model: openai("o3-mini"),
+            model: openai("o4-mini"),
             system: systemMessage,
             prompt,
           });
           break;
         case "anthropic":
           response = await generateText({
-            model: anthropic("claude-3-5-sonnet-latest"),
+            model: anthropic("claude-3-7-sonnet-latest"),
             system: systemMessage,
             prompt,
           });
