@@ -34,3 +34,8 @@ body {
 .font-serif {
   font-family: 'Cormorant Garamond', serif;
 }
+
+html, body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
