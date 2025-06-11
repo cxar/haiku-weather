@@ -25,8 +25,8 @@ export default function PoemDisplay({ poem }: { poem: string }) {
       <div
         className="inline-block backdrop-blur-lg bg-white/50 rounded-[3rem] px-8 md:px-12 py-6 md:py-8 shadow-lg ring-1 ring-white/20"
       >
-        <p className="whitespace-pre-line text-2xl md:text-4xl leading-relaxed tracking-wide max-w-screen-md mx-auto select-none">
-          {poem.split('\n').map((line, i) => (
+        <p className="whitespace-pre-line text-2xl md:text-4xl leading-relaxed tracking-wide max-w-[80vw] md:max-w-screen-md mx-auto select-none">
+          {poem.split('\n').slice(0,3).map((line, i) => (
             <motion.span
               key={i}
               className="block text-gray-900 select-none"
