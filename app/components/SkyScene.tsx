@@ -1,26 +1,18 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Canvas } from "@react-three/fiber";
-import HotAirBalloon from "./HotAirBalloon";
-import Cloud from "./Cloud";
 import PoemDisplay from "./PoemDisplay";
-import Title from "./Title";
+import PastelCanvas from "./PastelCanvas";
+import GlassOverlay from "./GlassOverlay";
 import { getLocation } from "@/lib/location";
+import TitleFade from "./TitleFade";
 
 export default function SkyScene() {
   const [poem, setPoem] = useState<string>("");
   const [isContentLoaded, setIsContentLoaded] = useState<boolean>(false);
-  const [fov, setFov] = useState<number>(60);
 
   useEffect(() => {
-    const handleResize = () => {
-      console.log("Window resized, updating FOV", { width: window.innerWidth });
-      setFov(window.innerWidth < 600 ? 75 : 60);
-    };
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
+    // Re-render poem on first mount only
   }, []);
 
   useEffect(() => {
@@ -80,33 +72,16 @@ export default function SkyScene() {
 
   return (
     <div className="fixed inset-0 overflow-hidden">
-      <div className="fixed inset-0 z-10">
-        <Canvas camera={{ position: [0, 1, 10], fov }}>
-          <color attach="background" args={["#cfebff"]} />
-          <ambientLight intensity={3} />
-          <directionalLight position={[5, 5, 5]} intensity={5} />
+      <PastelCanvas />
+      <GlassOverlay />
 
-          <Title isContentLoaded={isContentLoaded} />
-          <HotAirBalloon
-            position={[-1, 1, 0]}
-            isContentLoaded={isContentLoaded}
-          />
-          <Cloud position={[1, 0.5, 0]} isContentLoaded={isContentLoaded} />
-        </Canvas>
-      </div>
+      <TitleFade isContentLoaded={isContentLoaded} />
 
       {isContentLoaded && (
         <div className="absolute inset-0 flex items-center justify-center">
           <PoemDisplay poem={poem} />
         </div>
       )}
-
-      <footer className="absolute bottom-0 left-0 right-0 text-xs text-center z-30 text-gray-500/70 p-2">
-        <span className="opacity-80">
-          Hot air balloon by Poly by Google [CC-BY] via Poly Pizza • Clouds by
-          Jarlan Perez [CC-BY] via Poly Pizza
-        </span>
-      </footer>
     </div>
   );
 }
