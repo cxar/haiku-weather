@@ -8,11 +8,9 @@ export default function TitleFade({ isContentLoaded }: { isContentLoaded: boolea
       animate={{ opacity: isContentLoaded ? 0 : 1 }}
       transition={{ duration: 0.6 }}
     >
-      <div className="inline-block parchment px-8 md:px-14 py-8 md:py-10">
-        <h1 className="parchment-title text-4xl md:text-5xl text-[#3b2a1e] select-none text-center">
-          Haiku Weather
-        </h1>
-      </div>
+      <h1 className="parchment-title text-4xl md:text-5xl text-[#3b2a1e] select-none text-center">
+        Haiku Weather
+      </h1>
     </motion.div>
   );
 }

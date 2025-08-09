@@ -1,7 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
-import WaxSealButton from "./WaxSealButton";
 
 export default function PoemDisplay({ poem }: { poem: string }) {
   const [copied, setCopied] = useState(false);
@@ -40,8 +39,13 @@ export default function PoemDisplay({ poem }: { poem: string }) {
               </motion.span>
             ))}
         </p>
-        <div className="mt-6">
-          <WaxSealButton size={200} label={copied ? "Copied" : "Copy"} onClick={handleCopy} imgSrc="/wax-seal.png" />
+        <div className="mt-6 flex justify-center">
+          <button
+            onClick={handleCopy}
+            className="text-xl md:text-2xl font-medium text-[#a38a73] opacity-60 hover:opacity-100 hover:text-[#6b4f35] focus:outline-none focus:ring-2 focus:ring-[#3b2a1e]/20 rounded px-2 transition-colors"
+          >
+            {copied ? "Copied" : "Copy"}
+          </button>
         </div>
       </div>
     </motion.div>
