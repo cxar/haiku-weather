@@ -23,11 +23,7 @@ export async function generatePoem(
     country: string;
     clouds: number;
   },
-  providers: ("openai" | "anthropic" | "groq")[] = [
-    "openai",
-    "anthropic",
-    "groq",
-  ],
+  providers: ("openai" | "anthropic" | "groq")[] = ["anthropic"],
 ) {
   console.log("Generating poem for weather:", weather);
 
@@ -81,14 +77,14 @@ export async function generatePoem(
       switch (provider) {
         case "openai":
           response = await generateText({
-            model: openai("o4-mini"),
+            model: openai("gpt-5"),
             system: systemMessage,
             prompt,
           });
           break;
         case "anthropic":
           response = await generateText({
-            model: anthropic("claude-3-7-sonnet-latest"),
+            model: anthropic("claude-sonnet-4-0"),
             system: systemMessage,
             prompt,
           });

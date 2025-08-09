@@ -2,38 +2,27 @@
 
 import React, { useState, useEffect } from "react";
 import PoemDisplay from "./PoemDisplay";
-import PastelCanvas from "./PastelCanvas";
-import GlassOverlay from "./GlassOverlay";
 import { getLocation } from "@/lib/location";
 import TitleFade from "./TitleFade";
+import LavaLamp from "./LavaLamp";
 
 export default function SkyScene() {
   const [poem, setPoem] = useState<string>("");
   const [isContentLoaded, setIsContentLoaded] = useState<boolean>(false);
 
   useEffect(() => {
-    // Re-render poem on first mount only
-  }, []);
-
-  useEffect(() => {
-    console.log("Initial mount, fetching poem");
     fetchPoem();
   }, []);
 
   async function fetchPoem() {
     try {
-      console.log("Getting user location");
       const location = await getLocation();
-      console.log("Location retrieved:", location);
-
-      console.log("Fetching weather data");
       const weatherRes = await fetch("/api/weather", {
         method: "POST",
         body: JSON.stringify({ location }),
         headers: { "Content-Type": "application/json" },
       });
       const { weather } = await weatherRes.json();
-      console.log("Weather data received:", weather);
 
       const structuredWeather = {
         temp: weather.temp,
@@ -50,36 +39,33 @@ export default function SkyScene() {
         feels_like: weather.feels_like,
         clouds: weather.clouds,
       };
-      console.log("Structured weather data:", structuredWeather);
-
-      console.log("Fetching poem");
       const poemRes = await fetch("/api/poem", {
         method: "POST",
         body: JSON.stringify({ weather: structuredWeather }),
         headers: { "Content-Type": "application/json" },
       });
       const { poem } = await poemRes.json();
-      console.log("Poem received:", poem);
       setPoem(poem);
-    } catch (error) {
-      console.error("Error in fetchPoem:", error);
+    } catch {
+      // Silently fail; poem will remain empty
     } finally {
-      console.log("Setting content loaded");
       setIsContentLoaded(true);
-      console.log("Content loaded set to true");
     }
   }
 
   return (
-    <div className="fixed inset-0 overflow-hidden">
-      <PastelCanvas />
-      <GlassOverlay />
-
+    <div className="fixed inset-0 overflow-hidden grain vignette">
+      <div className="absolute inset-0" aria-hidden="true" />
+      <LavaLamp />
       <TitleFade isContentLoaded={isContentLoaded} />
-
       {isContentLoaded && (
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
           <PoemDisplay poem={poem} />
+          {poem === "" && (
+            <button onClick={fetchPoem} className="wax mt-5 px-5 py-2 text-sm tracking-wide">
+              Try again
+            </button>
+          )}
         </div>
       )}
     </div>
